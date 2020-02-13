@@ -82,12 +82,18 @@
          * @returns {methods}
          */
         addSchedule: function (timeline, data) {
+            console.log("addSchedule");
+            console.log(timeline);
+            console.log(data);
             var d = {
                 start: methods.calcStringTime(data.start),
                 end: methods.calcStringTime(data.end),
                 text: data.text,
                 timeline: timeline
             };
+            if(data.class) {
+                d.class = data.class;
+            }
             if (data.data) {
                 d.data = data.data;
             }
@@ -224,6 +230,8 @@
          * @returns {number}
          */
         _addScheduleData: function (timeline, data) {
+            console.log(data);
+            console.log(data.class);
             var st = Math.ceil((data.start - tableStartTime) / setting.widthTime);
             var et = Math.floor((data.end - tableStartTime) / setting.widthTime);
             var $bar = $('<div class="sc_bar"><span class="head"><span class="time"></span></span><span class="text"></span></div>');
@@ -241,9 +249,9 @@
                 $bar.find('.text').text(data.text);
             }
             if (data.class) {
+                console.log("se agrego clase "+data.class);
                 $bar.addClass(data.class);
             }
-            // $element.find('.sc_main').append($bar);
             var $row = $element.find('.sc_main .timeline').eq(timeline);
             $row.append($bar);
             // データの追加
@@ -474,6 +482,10 @@
                     data.data = {};
                     if (bdata.data) {
                         data.data = bdata.data;
+                    }
+                    //support for class inside data
+                    if (bdata.class) {
+                        data.class = bdata.class;
                     }
                     methods._addScheduleData.apply(element, [id, data]);
                 }
